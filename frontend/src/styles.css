@@ -69,6 +69,18 @@ li {
   border-radius: 5px;
 }
 
+.active {
+  color: green;
+}
+
+.inactive {
+  color: red;
+}
+
+.text {
+  color: #555;
+}
+
 /* Back to Home Link */
 .back-link {
   display: inline-block;

@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getAllJobs } from "../api/jobs";
 import { Link } from "react-router-dom";
 import "../styles.css";
 
 const Home = () => {
   const [jobs, setJobs] = useState([]);
 
+  const getJobs = async () => {
+    const jobs = await getAllJobs();
+    setJobs(jobs);
+  }
+
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000/api/jobs")
-      .then(response => {
-        setJobs(response.data);
-      })
-      .catch(error => console.error("Error fetching jobs:", error));
+    getJobs();
   }, []);
 
   return (
@@ -32,7 +33,7 @@ const Home = () => {
               <td>{job.id}</td>
               <td><Link to={`/job/${job.id}`}>{job.req_name}</Link></td>
               <td>{job.location.city}, {job.location.state}</td>
-              <td>{job.status}</td>
+              <td className={job.status === "Active" ? "active" : "inactive"}>{job.status}</td>
             </tr>
           ))}
         </tbody>

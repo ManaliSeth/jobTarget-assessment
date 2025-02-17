@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import { getJobById } from "../api/jobs";
 import "../styles.css";
 
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
 
+  const getJob = async (id) => {
+    const job = await getJobById(id);
+    setJob(job);
+  }
+
   useEffect(() => {
-    axios.get(`http://127.0.0.1:5000/api/jobs/${id}`)
-      .then(response => setJob(response.data))
-      .catch(error => console.error("Error fetching job details:", error));
+    getJob(id);
   }, [id]);
 
   if (!job) return <p>Loading job details...</p>;
@@ -19,7 +22,10 @@ const JobDetails = () => {
     <div className="job-details">
       <h1>{job.req_name}</h1>
       <p><strong>Location:</strong> {job.location.city}, {job.location.state}, {job.location.country}</p>
-      <p><strong>Status:</strong> {job.status}</p>
+      <p className={job.status === "Active" ? "active" : "inactive"}>
+        <strong className="text">Status: </strong>
+        {job.status}
+      </p>
       <p><strong>Description:</strong> {job.description}</p>
 
       <h2>Job Postings</h2>
