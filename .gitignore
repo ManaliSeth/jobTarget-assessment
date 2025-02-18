@@ -1,2 +1,4 @@
 jobTargetenv/
 api/routes/__pycache__
+tests/__pycache__/
+.coverage
