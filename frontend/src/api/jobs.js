@@ -6,7 +6,7 @@ export const getAllJobs = async () => {
         return res.data ?? [];
     } catch (error) {
         console.log("Error: ", error);
-        return null;
+        return [];
     }
 }
 
@@ -16,6 +16,9 @@ export const getJobById = async (jobId) => {
         return res.data ?? null;
     } catch (error) {
         console.log("Error: ", error);
-        return null;
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        throw error;
     }
 }

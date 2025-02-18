@@ -6,16 +6,27 @@ import "../styles.css";
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState(null);
+  const [error, setError] = useState(null);
 
   const getJob = async (id) => {
-    const job = await getJobById(id);
-    setJob(job);
+    try {
+      const job = await getJobById(id);
+      if (!job) {
+        setError("Job not found");
+      } else {
+        setJob(job);
+      }
+    } catch (err) {
+      console.error("Error fetching job details:", err);
+      setError("Error fetching job details");
+    }
   }
 
   useEffect(() => {
     getJob(id);
   }, [id]);
 
+  if (error) return <p>{error}</p>;
   if (!job) return <p>Loading job details...</p>;
 
   return (
